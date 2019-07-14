@@ -11,18 +11,8 @@ class Pokemon
   end
 
   def self.find(id_num, db)
-    # find the pokemon in the database given a name
-    # return a new instance of the Pokemon class
-    sql = <<-SQL
-      SELECT *
-      FROM Pokemons
-      WHERE name = ?
-      LIMIT 1
-    SQL
-
-    DB[:conn].execute(sql, name).map do |row|
-      self.new_from_db(row)
-    end.first
+    pokemon_info = db.execute("SELECT * FROM pokemon WHERE id=?", id_num).flatten
+    Pokemon.new(id: pokemon_info[0], name: pokemon_info[1], type: pokemon_info[2], hp: pokemon_info[3], db: db)
   end
  
 end
