@@ -2,34 +2,15 @@ class Pokemon
   attr_accessor :id, :name, :type
   
   def initialize(id:, name:, type:, hp: nil, db:)
-    @id,  @name, @type, @hp = 
-    @db = db 
+    @id,  @name, @type, @hp, id = name, type, hp, db
   end 
   
-  
-  
-  def save
-    if self.id
-    else
-      sql = <<-SQL
-        INSERT INTO pokemons (name, type) 
-        VALUES (?, ?)
-      SQL
-
-      DB[:conn].execute(sql, self.name, self.type)
-
-      @id = DB[:conn].execute("SELECT last_insert_rowid() FROM pokemons")[0][0]
-    end 
+  def self.save (name, type, db)
+    db.execute("INSERT INTO pokemon (name, type) 
+        VALUES (?, ?)", name, type)
   end
-  
-  def self.new_from_db(row)
-    id = row[0]
-    name = row[1]
-    type = row[2]
-    self.new(id, name, type)
-  end 
-  
-  def self.find(name)
+
+  def self.find(id_num, db)
     # find the pokemon in the database given a name
     # return a new instance of the Pokemon class
     sql = <<-SQL
