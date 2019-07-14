@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS pokemon (
       name TEXT, 
       type TEXT, 
       db TEXT
-      )
+      );
